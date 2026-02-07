@@ -3,7 +3,21 @@ layout: ../layouts/AboutLayout.astro
 title: "About"
 ---
 
-AstroPaper is a minimal, accessible and SEO-friendly blog theme built with [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.com/).
+## 平岡 滉司 / Koushi Hiraoka
+
+九州大学 システム情報科学府 情報理工学専攻 人間情報システム研究グループ 荒川研究室
+博士後期課程 (D1)
+
+## Research
+- 人間行動認識
+
+## Education
+- 2019年 愛媛大学 学士課程修了
+
+## Contact
+- Email: hiraoka.koushi.031@s.kyushu-u.ac.jp
+
+<!-- AstroPaper is a minimal, accessible and SEO-friendly blog theme built with [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.com/).
 
 ![Astro Paper](public/astropaper-og.jpg)
 
@@ -34,4 +48,4 @@ Found a bug 🐛 or have an improvement ✨ in mind? Feel free to open an [issue
 
 If you find this theme helpful, you can also [sponsor me on GitHub](https://github.com/sponsors/satnaing) or [buy me a coffee](https://buymeacoffee.com/satnaing) to show your support — every penny counts.
 
-Kyay zuu! 🙏🏼
+Kyay zuu! 🙏🏼 -->

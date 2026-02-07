@@ -1,77 +1,213 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Socials from "@/components/Socials.astro";
 import LinkButton from "@/components/LinkButton.astro";
-import Card from "@/components/Card.astro";
-import getSortedPosts from "@/utils/getSortedPosts";
-import IconRss from "@/assets/icons/IconRss.svg";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
-import { SITE } from "@/config";
 import { SOCIALS } from "@/constants";
-import profileImage from "@/assets/images/profile.jpg"; 
+import profileImage from "@/assets/images/profile.jpg";
 
-const posts = await getCollection("blog");
+// データをインポート
+import { newsItems } from "@/data/news";
+import { journals, internationalConferences, domesticConferences, myNames } from "@/data/publications";
+import { researchInterests, education, awards, grants } from "@/data/profile";
 
-const sortedPosts = getSortedPosts(posts);
-const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
-const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+const NEWS_DISPLAY_COUNT = 5;
+const highlightMyName = (authors: string) => {
+  let result = authors;
+  myNames.forEach(name => {
+    result = result.replace(
+      new RegExp(name, "g"),
+      `<u class="underline underline-offset-2">${name}</u>`
+    );
+  });
+  return result;
+};
 ---
 
 <Layout>
   <Header />
   <main id="main-content" data-layout="index" class="app-layout">
+    
+    <!-- Hero Section (自己紹介) -->
     <section id="hero" class:list={["pt-8 pb-6", "border-b border-border"]}>
-    <!-- 写真 + テキストの横並びレイアウト -->
       <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-        <!-- 丸型写真 -->
-        <img 
-          src={profileImage.src} 
+        <img
+          src={profileImage.src}
           alt="プロフィール写真"
           class="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover shrink-0"
         />
-        
-        <!-- テキスト部分 -->
         <div>
           <p>
-            九州大学 人間情報システム研究グループ 荒川研究室所属<br />
+            九州大学 人間情報システム研究グループ 荒川研究室<br />
             博士後期課程1年 (D1)
           </p>
-
           {
-          SOCIALS.length > 0 && (
-          <div class="mt-4 flex max-sm:flex-col sm:items-center">
-            <div class="me-2 mb-1 sm:mb-0 whitespace-nowrap">Social Links:</div>
-            <Socials />
-          </div>
-        )
-      }
+            SOCIALS.length > 0 && (
+              <div class="mt-4 flex flex-col sm:flex-row sm:items-center">
+                <div class="me-2 mb-1 sm:mb-0 whitespace-nowrap">Links:</div>
+                <Socials />
+              </div>
+            )
+          }
         </div>
       </div>
     </section>
 
-    {
-      recentPosts.length > 0 && (
-        <section id="recent-posts" class="pt-12 pb-6">
-          <h2 class="text-2xl font-semibold tracking-wide">Recent Posts</h2>
-          <ul>
-            {recentPosts.map(
-              (data, index) =>
-                index < SITE.postPerIndex && <Card variant="h3" {...data} />
-            )}
-          </ul>
-        </section>
-      )
-    }
+    <!-- News Section -->
+    <section id="news" class="pt-12 pb-6 border-b border-border">
+      <h2 class="text-2xl font-semibold tracking-wide mb-6">News</h2>
+      <ul class="space-y-3">
+        {newsItems.slice(0, NEWS_DISPLAY_COUNT).map((item) => (
+          <li class="flex flex-col sm:flex-row sm:gap-4">
+            <span class="text-sm text-foreground/60 shrink-0 sm:w-24">{item.date}</span>
+            <span>{item.content}</span>
+          </li>
+        ))}
+      </ul>
+      {newsItems.length > NEWS_DISPLAY_COUNT && (
+        <div class="mt-4">
+          <LinkButton href="/news/">
+            All News
+            <IconArrowRight class="inline-block rtl:-rotate-180" />
+          </LinkButton>
+        </div>
+      )}
+    </section>
 
-    <div class="my-8 text-center">
-      <LinkButton href="/posts/">
-        All Posts
-        <IconArrowRight class="inline-block rtl:-rotate-180" />
-      </LinkButton>
-    </div>
+    <!-- About Section -->
+    <section id="about-detail" class="pt-12 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide mb-6">About</h2>
+      
+      <div class="space-y-6">
+        <!-- <div>
+          <h3 class="text-lg font-medium mb-2 text-accent">Education</h3>
+          <ul class="space-y-2">
+            {education.map((edu) => (
+              <li>
+                <p class="font-medium">{edu.institution}</p>
+                <p class="text-sm text-foreground/60">{edu.degree}, {edu.period}</p>
+              </li>
+            ))}
+          </ul>
+        </div> -->
+        <div>
+          <h3 class="text-lg font-medium mb-2 text-accent">Research Interests</h3>
+          <ul class="list-disc list-inside space-y-1 text-foreground/80">
+            Human Activity Recognition, 
+            Privacy-Aware System, 
+            Subjective Privacy,
+            Ubiquitous/Wearable Computing
+            <!-- {researchInterests.map((interest) => (
+              <li>{interest}</li>
+            ))} -->
+          </ul>
+        </div>
+        {awards.length > 0 && (
+          <div>
+            <h3 class="text-lg font-medium mb-2 text-accent">Awards</h3>
+            <ul class="space-y-2">
+              {awards.map((award) => (
+                <li>
+                  <p class="font-medium">{award.title}</p>
+                  <p class="text-sm text-foreground/60">{award.organization}, {award.year}, {award.month}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {grants.length > 0 && (
+          <div>
+            <h3 class="text-lg font-medium mb-2 text-accent">Grants</h3>
+            <ul class="space-y-2">
+              {grants.map((grant) => (
+                <li>
+                  <p class="font-medium whitespace-pre-line">{grant.title}</p>
+                  <p class="text-sm text-foreground/60">{grant.organization}, {grant.period}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </section>
+
+        <!-- Publications Section -->
+    <section id="publications" class="pt-12 pb-6 border-b border-border">
+      <h2 class="text-2xl font-semibold tracking-wide mb-6">Publications</h2>
+
+      {journals.length > 0 && (
+        <div class="mb-8">
+          <h3 class="text-lg font-medium mb-4 text-accent">Journal Papers</h3>
+          <ul class="space-y-4">
+            {journals.map((pub) => (
+              <li>
+                <p class="font-medium">{pub.title}</p>
+                <p class="text-sm text-foreground/70" set:html={highlightMyName(pub.authors)}></p>
+                <p class="text-sm text-foreground/70">{pub.venue}, {pub.year}, {pub.month}</p>
+                {pub.links && pub.links.doi && (
+                  <p class="text-sm text-foreground/60">DOI: {pub.links.doi}.</p>
+                )}
+                {pub.links && (
+                  <div class="mt-1 flex gap-2 text-sm">
+                    {pub.links.paper && <a href={pub.links.paper} class="text-accent hover:underline">[Paper]</a>}
+                    {pub.links.slide && <a href={pub.links.slide} class="text-accent hover:underline">[Slide]</a>}
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {internationalConferences.length > 0 && (
+        <div class="mb-8">
+          <h3 class="text-lg font-medium mb-4 text-accent">International Conference</h3>
+          <ul class="space-y-4">
+            {internationalConferences.map((pub) => (
+              <li>
+                <p class="font-medium">{pub.title}</p>
+                <p class="text-sm text-foreground/70" set:html={highlightMyName(pub.authors)}></p>
+                <p class="text-sm text-foreground/70">{pub.venue}, {pub.year}, {pub.month}</p>
+                {pub.links && (
+                  <div class="mt-1 flex gap-2 text-sm">
+                    {pub.links.paper && <a href={pub.links.paper} class="text-accent hover:underline">[Paper]</a>}
+                    {pub.links.slide && <a href={pub.links.slide} class="text-accent hover:underline">[Slide]</a>}
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {domesticConferences.length > 0 && (
+        <div class="mb-8">
+          <h3 class="text-lg font-medium mb-4 text-accent">Domestic Conference</h3>
+          <ul class="space-y-4">
+            {domesticConferences.map((pub) => (
+              <li>
+                <p class="font-medium">{pub.title}</p>
+                <p class="text-sm text-foreground/70" set:html={highlightMyName(pub.authors)}></p>
+                <p class="text-sm text-foreground/70">{pub.venue}, {pub.year}, {pub.month}</p>
+                {pub.links && (
+                  <div class="mt-1 flex gap-2 text-sm">
+                    {pub.links.paper && <a href={pub.links.paper} class="text-accent hover:underline">[Paper]</a>}
+                    {pub.links.slide && <a href={pub.links.slide} class="text-accent hover:underline">[Slide]</a>}
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {journals.length === 0 && internationalConferences.length === 0 && domesticConferences.length === 0 && (
+        <p class="text-foreground/60">Coming soon...</p>
+      )}
+    </section>
+
   </main>
   <Footer />
 </Layout>

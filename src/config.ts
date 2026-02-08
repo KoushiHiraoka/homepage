@@ -22,4 +22,3 @@ export const SITE = {
   lang: "ja", // html lang code. Set this empty and default will be "en"
   timezone: "Asia/Tokyo",
 } as const;
-// 

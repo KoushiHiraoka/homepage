@@ -110,7 +110,7 @@ const highlightMyName = (authors: string) => {
             <ul class="space-y-2">
               {awards.map((award) => (
                 <li>
-                  <p class="font-medium">{award.title}</p>
+                  <p class="font-medium whitespace-pre-line">{award.title}</p>
                   <p class="text-sm text-foreground/60">{award.organization}, {award.year}, {award.month}</p>
                   {award.link && (
                   <div class="mt-1 flex gap-2 text-sm">

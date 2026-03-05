@@ -53,7 +53,7 @@ export const grants: { title: string; organization: string; period: string; link
 ];
 
 export const awards: { title: string; organization: string; year: string; month: string; link?: string}[] = [
-    {   title: "異能vation ジェネレーションアワード \n あなたをコントローラーに「SAW-Ring」", 
+    {   title: "異能vation ジェネレーションアワード \n 『あなたをコントローラーに「SAW-Ring」』", 
         organization: "2025年度 異能vation", 
         year : "2026",
         month: "February", 

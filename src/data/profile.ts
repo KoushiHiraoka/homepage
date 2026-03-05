@@ -28,11 +28,6 @@ export const grants: { title: string; organization: string; period: string; link
         period : "2026年2月-2026年3月", 
         link: "https://www.parks-startup.jp/"
     },
-    {   title: "異能vation ジェネレーションアワード ノミネート \n 採択課題：あなたをコントローラーに「SAW-Ring」", 
-        organization: "2025年度 異能vation", 
-        period : "2026年2月", 
-        link: "https://inno-vation.jp/nominate/2025/"
-    },
     {   title: "2025年度 福岡未踏 【Pro】採択 \n「SAW-Ring：表面弾性波センシングを活用したテクスチャ駆動リング型デバイス」", 
         organization: "福岡未踏的人材発掘・育成コンソーシアム (福岡未踏)", 
         period : "2025年7月 - 2026年2月", 
@@ -57,7 +52,13 @@ export const grants: { title: string; organization: string; period: string; link
     },
 ];
 
-export const awards: { title: string; organization: string; year: string; month: string }[] = [
+export const awards: { title: string; organization: string; year: string; month: string; link?: string}[] = [
+    {   title: "異能vation ジェネレーションアワード \n あなたをコントローラーに「SAW-Ring」", 
+        organization: "2025年度 異能vation", 
+        year : "2026",
+        month: "February", 
+        link: "https://inno-vation.jp/nominate/2025/"
+    },  
     {   title: "最優秀デモンストレーション賞", 
         organization: "第33回 マルチメディア通信と分散処理ワークショップ (DPSWS)", 
         year: "2025", 

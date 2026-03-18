@@ -57,8 +57,7 @@ export const awards: { title: string; organization: string; year: string; month:
         organization: "2025年度 異能vation", 
         year : "2026",
         month: "February", 
-        link: "https://inno-vation.jp/nominate/2025/"
-    },  
+        link: "https://inno-vation.jp/nominate/2025/"},  
     {   title: "最優秀デモンストレーション賞", 
         organization: "第33回 マルチメディア通信と分散処理ワークショップ (DPSWS)", 
         year: "2025", 

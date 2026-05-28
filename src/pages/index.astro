@@ -9,11 +9,10 @@ import { SOCIALS } from "@/constants";
 import profileImage from "@/assets/images/profile.jpg";
 
 // データをインポート
-import { newsItems } from "@/data/news";
+import { newsItems, NEWS_DISPLAY_COUNT } from "@/data/news";
 import { journals, internationalConferences, domesticConferences, myNames } from "@/data/publications";
 import { awards, grants } from "@/data/profile";
-
-const NEWS_DISPLAY_COUNT = 5;
+import { products } from "@/data/products";
 const highlightMyName = (authors: string) => {
   let result = authors;
   myNames.forEach(name => {
@@ -61,9 +60,24 @@ const highlightMyName = (authors: string) => {
       <h2 class="text-2xl font-semibold tracking-wide mb-6">News</h2>
       <ul class="space-y-3">
         {newsItems.slice(0, NEWS_DISPLAY_COUNT).map((item) => (
-          <li class="flex flex-col sm:flex-row sm:gap-4">
-            <span class="text-sm text-foreground/60 shrink-0 sm:w-24">{item.date}</span>
-            <span>{item.content}</span>
+          <li>
+            {item.url ? (
+              <a href={item.url} target="_blank" rel="noopener" class="flex gap-4 rounded-lg border border-border p-4 hover:bg-foreground/5 transition-colors">
+                {item.ogImage && (
+                  <img src={item.ogImage} alt={item.ogTitle ?? item.content} class="w-20 h-20 object-cover rounded shrink-0" />
+                )}
+                <div class="flex flex-col gap-1">
+                  <span class="text-sm text-foreground/60">{item.date}{item.source && ` · ${item.source}`}</span>
+                  <span class="font-medium">{item.ogTitle ?? item.content}</span>
+                  {item.ogDescription && <span class="text-sm text-foreground/70 line-clamp-2">{item.ogDescription}</span>}
+                </div>
+              </a>
+            ) : (
+              <div class="flex flex-col sm:flex-row sm:gap-4">
+                <span class="text-sm text-foreground/60 shrink-0 sm:w-24">{item.date}</span>
+                <span>{item.content}</span>
+              </div>
+            )}
           </li>
         ))}
       </ul>
@@ -143,6 +157,25 @@ const highlightMyName = (authors: string) => {
         )}
       </div>
     </section>
+
+    <!-- Products Section -->
+    {products.length > 0 && (
+      <section id="products" class="pt-12 pb-6 border-b border-border">
+        <h2 class="text-2xl font-semibold tracking-wide mb-6">Products</h2>
+        <ul class="space-y-4">
+          {products.map((p) => (
+            <li>
+              <p class="font-medium">{p.title}</p>
+              <p class="text-sm text-foreground/70">{p.description}</p>
+              <p class="text-sm text-foreground/60">{p.year}</p>
+              <div class="mt-1 flex gap-2 text-sm">
+                <a href={p.url} class="text-accent hover:underline" target="_blank" rel="noopener">[Site]</a>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
 
         <!-- Publications Section -->
     <section id="publications" class="pt-12 pb-6 border-b border-border">

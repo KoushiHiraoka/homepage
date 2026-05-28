@@ -1,0 +1,47 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import LinkButton from "@/components/LinkButton.astro";
+import IconArrowLeft from "@/assets/icons/IconArrowLeft.svg";
+import { newsItems } from "@/data/news";
+---
+
+<Layout>
+  <Header />
+  <main id="main-content" class="app-layout">
+    <section class="pt-8 pb-6">
+      <div class="mb-6">
+        <LinkButton href="/">
+          <IconArrowLeft class="inline-block rtl:rotate-180" />
+          Back
+        </LinkButton>
+      </div>
+      <h1 class="text-2xl font-semibold tracking-wide mb-6">News</h1>
+      <ul class="space-y-3">
+        {newsItems.map((item) => (
+          <li>
+            {item.url ? (
+              <a href={item.url} target="_blank" rel="noopener" class="flex gap-4 rounded-lg border border-border p-4 hover:bg-foreground/5 transition-colors">
+                {item.ogImage && (
+                  <img src={item.ogImage} alt={item.ogTitle ?? item.content} class="w-20 h-20 object-cover rounded shrink-0" />
+                )}
+                <div class="flex flex-col gap-1">
+                  <span class="text-sm text-foreground/60">{item.date}{item.source && ` · ${item.source}`}</span>
+                  <span class="font-medium">{item.ogTitle ?? item.content}</span>
+                  {item.ogDescription && <span class="text-sm text-foreground/70">{item.ogDescription}</span>}
+                </div>
+              </a>
+            ) : (
+              <div class="flex flex-col sm:flex-row sm:gap-4">
+                <span class="text-sm text-foreground/60 shrink-0 sm:w-24">{item.date}</span>
+                <span>{item.content}</span>
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  </main>
+  <Footer />
+</Layout>

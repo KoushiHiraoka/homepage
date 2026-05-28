@@ -2,6 +2,7 @@ import type { Props } from "astro";
 import IconMail from "@/assets/icons/IconMail.svg";
 import IconGitHub from "@/assets/icons/IconGitHub.svg";
 import IconBrandX from "@/assets/icons/IconBrandX.svg";
+import IconWorld from "@/assets/icons/IconWorld.svg";
 // import IconLinkedin from "@/assets/icons/IconLinkedin.svg";
 import IconWhatsapp from "@/assets/icons/IconWhatsapp.svg";
 import IconFacebook from "@/assets/icons/IconFacebook.svg";
@@ -22,6 +23,12 @@ export const SOCIALS: Social[] = [
     href: "https://github.com/KoushiHiraoka",
     linkTitle: `${SITE.title} on GitHub`,
     icon: IconGitHub,
+  },
+  {
+    name: "Lab",
+    href: "https://app.ait.kyushu-u.ac.jp/",
+    linkTitle: "九州大学 荒川研究室",
+    icon: IconWorld,
   },
   // {
   //   name: "LinkedIn",

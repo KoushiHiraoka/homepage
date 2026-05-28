@@ -71,16 +71,6 @@ export const internationalConferences: Publication[] = [
     }
     },
     {
-    title: "Exploring Trade-offs in Privacy-Aware Activity Recognition with Small Wearable Cameras",
-    authors: "Koushi Hiraoka, Yugo Nakamura, Yutaka Arakawa",
-    venue: "International Conference on Human-Computer Interaction (HCII)",
-    year: "2025",
-    month: "May",
-    links: {
-      paper: "https://link.springer.com/chapter/10.1007/978-3-031-92977-9_17",
-    }
-    },
-    {
     title: "WiLearn: Design and Implementation of a Microlearning System that Utilizes a Captive Portal of Wi-Fi",
     authors: "Koushi Hiraoka, Shuta Matsuo, Yugo Nakamura, Yutaka Arakawa",
     venue: "International Conference on Mobile Computing and Ubiquitous Networking (ICMU)",

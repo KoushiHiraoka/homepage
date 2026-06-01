@@ -53,6 +53,12 @@ export const grants: { title: string; organization: string; period: string; link
 ];
 
 export const awards: { title: string; organization: string; year: string; month: string; link?: string}[] = [
+    {   title: "株式会社 CARTA HOLDINGS賞 \n 「みんなでセット麻雀」", 
+        organization: "技育博 2026 Vo.1 ", 
+        year : "2026",
+        month: "May", 
+        link: "https://x.com/geek_pjt/status/2060677261968465991"
+    },  
     {   title: "異能vation ジェネレーションアワード \n 『あなたをコントローラーに「SAW-Ring」』", 
         organization: "2025年度 異能vation", 
         year : "2026",

@@ -53,6 +53,21 @@ export const grants: { title: string; organization: string; period: string; link
 ];
 
 export const awards: { title: string; organization: string; year: string; month: string; link?: string}[] = [
+    {   title: "DICOMO ヤングリサーチャー賞", 
+        organization: "マルチメディア、分散、協調とモバイル DICOMO2026 シンポジウム", 
+        year : "2026",
+        month: "June", 
+    },  
+    {   title: "DICOMO ナイトテクニカルセッション優勝", 
+        organization: "マルチメディア、分散、協調とモバイル DICOMO2026 シンポジウム", 
+        year : "2026",
+        month: "June", 
+    },  
+    {   title: "UBI研究会 研究会貢献賞", 
+        organization: "ユビキタスコンピューティングシステム (UBI) 研究会", 
+        year : "2026",
+        month: "June", 
+    },  
     {   title: "技育博Vo.1 【企業賞】株式会社 CARTA HOLDINGS賞 \n 「みんなでセット麻雀」", 
         organization: "技育プロジェクト", 
         year : "2026",

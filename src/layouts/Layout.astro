@@ -11,9 +11,11 @@ type Props = {
   profile?: string;
   description?: string;
   ogImage?: string;
+  ogType?: string;
   canonicalURL?: string;
   pubDatetime?: Date;
   modDatetime?: Date | null;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
   scrollSmooth?: boolean;
 };
 
@@ -22,30 +24,88 @@ const {
   author = SITE.author,
   profile = SITE.profile,
   description = SITE.desc,
-  ogImage = SITE.ogImage ? `/${SITE.ogImage}` : "/og.png",
-  canonicalURL = new URL(Astro.url.pathname, Astro.url),
+  ogImage = SITE.ogImage || "og.png",
+  ogType,
+  canonicalURL: canonicalURLProp,
   pubDatetime,
   modDatetime,
+  structuredData: customStructuredData,
   scrollSmooth = false,
 } = Astro.props;
 
-const socialImageURL = new URL(ogImage, Astro.url);
+const siteBaseURL = new URL(SITE.website);
+const siteBasePath = siteBaseURL.pathname.endsWith("/")
+  ? siteBaseURL.pathname
+  : `${siteBaseURL.pathname}/`;
+const currentPathname = Astro.url.pathname;
+const canonicalPathname =
+  currentPathname.endsWith("/") || currentPathname.includes(".")
+    ? currentPathname
+    : `${currentPathname}/`;
+const canonicalURL = canonicalURLProp
+  ? new URL(canonicalURLProp, siteBaseURL)
+  : new URL(canonicalPathname, Astro.url);
 
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  headline: `${title}`,
-  image: `${socialImageURL}`,
-  datePublished: `${pubDatetime?.toISOString()}`,
-  ...(modDatetime && { dateModified: modDatetime.toISOString() }),
-  author: [
-    {
-      "@type": "Person",
-      name: `${author}`,
-      ...(profile && { url: profile }),
-    },
-  ],
+const toSiteURL = (pathOrURL: string) => {
+  try {
+    return new URL(pathOrURL);
+  } catch {
+    const cleanPath = pathOrURL.startsWith(siteBasePath)
+      ? pathOrURL.slice(siteBasePath.length)
+      : pathOrURL.replace(/^\/+/, "");
+
+    return new URL(cleanPath, siteBaseURL);
+  }
 };
+
+const socialImageURL = toSiteURL(ogImage);
+const faviconURL = new URL("favicon.svg", siteBaseURL);
+const sitemapURL = new URL("sitemap-index.xml", siteBaseURL);
+const rssURL = new URL("rss.xml", siteBaseURL);
+const personData = {
+  "@type": "Person",
+  "@id": new URL("#person", siteBaseURL).href,
+  name: SITE.name,
+  alternateName: [SITE.nameEn, SITE.author],
+  url: SITE.profile,
+  email: SITE.email,
+  affiliation: {
+    "@type": "CollegeOrUniversity",
+    name: "九州大学",
+    url: "https://www.kyushu-u.ac.jp/",
+  },
+  sameAs: SITE.sameAs,
+};
+
+const defaultStructuredData = pubDatetime
+  ? {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: `${title}`,
+      image: `${socialImageURL}`,
+      datePublished: `${pubDatetime?.toISOString()}`,
+      ...(modDatetime && { dateModified: modDatetime.toISOString() }),
+      author: [
+        {
+          "@type": "Person",
+          name: `${author}`,
+          ...(profile && { url: profile }),
+        },
+      ],
+    }
+  : {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: title,
+      description,
+      url: canonicalURL.href,
+      image: socialImageURL.href,
+      inLanguage: SITE.lang,
+      author: personData,
+    };
+
+const structuredData = customStructuredData ?? defaultStructuredData;
+const resolvedOgType = ogType ?? (pubDatetime ? "article" : "website");
 ---
 
 <!doctype html>
@@ -57,7 +117,7 @@ const structuredData = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={faviconURL} />
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
 
@@ -72,9 +132,11 @@ const structuredData = {
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="author" content={author} />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="robots" content="index, follow" />
+    <link rel="sitemap" type="application/xml" href={sitemapURL} />
 
     <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={resolvedOgType} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
@@ -99,11 +161,11 @@ const structuredData = {
     }
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonicalURL} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={socialImageURL} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL} />
 
     <!-- Google JSON-LD Structured data -->
     <script
@@ -118,7 +180,7 @@ const structuredData = {
       rel="alternate"
       type="application/rss+xml"
       title={SITE.title}
-      href={new URL("rss.xml", Astro.site)}
+      href={rssURL}
     />
 
     <meta name="theme-color" content="" />
@@ -140,13 +202,8 @@ const structuredData = {
     <!-- Minimal inline script to prevent FOUC - sets theme immediately -->
     <script is:inline>
       (function () {
-        const initialColorScheme = "dark"; // "light" | "dark"
-        const currentTheme = localStorage.getItem("theme");
-
         function getPreferTheme() {
           return "dark";
-          // if (currentTheme) return currentTheme;
-          // if (initialColorScheme) return initialColorScheme;
           // return window.matchMedia("(prefers-color-scheme: dark)").matches
           //   ? "dark"
           //   : "light";
@@ -168,13 +225,18 @@ const structuredData = {
       })();
     </script>
     <!-- Google tag (gtag.js) -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-ETHS7GP7HH"></script>
+    <script
+      is:inline
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-ETHS7GP7HH"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      function gtag(...args) {
+        dataLayer.push(args);
+      }
+      gtag("js", new Date());
 
-      gtag('config', 'G-ETHS7GP7HH');
+      gtag("config", "G-ETHS7GP7HH");
     </script>
   </head>
   <body>

@@ -85,6 +85,15 @@ export const internationalConferences: Publication[] = [
 
 export const domesticConferences: Publication[] = [
     {
+    title: "Vision-Language Modelを用いた主観的プライバシーの代理評価に関する基礎検討",
+    authors: "平岡 滉司, 中村 優吾, 峯恒憲, 荒川 豊",
+    venue: "モバイルコンピューティングと新社会システム (MBL) 研究会",
+    year: "2026",
+    month: "June",
+    award: "ヤングリサーチャー賞",
+    links: {}
+    },
+   {
     title: "IMUとVPUを併用した競歩におけるロス・オブ・コンタクト判定手法の検討",
     authors: "中山 陽, 平岡 滉司, 中村 優吾, 荒川 豊",
     venue: "モバイルコンピューティングと新社会システム (MBL) 研究会",

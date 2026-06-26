@@ -1,11 +1,15 @@
 export const BASE_URL = import.meta.env.BASE_URL || "http://localhost:3000";
 export const SITE = {
   website: "https://koushihiraoka.github.io/homepage/",
+  name: "平岡 滉司",
+  nameEn: "Koushi Hiraoka",
   author: "平岡 滉司 (Koushi Hiraoka)",
   profile: "https://koushihiraoka.github.io/homepage/",
-  desc: "九州大学 人間情報システム研究グループ 荒川研究室 博士後期課程1年 (D1)",
+  desc: "平岡 滉司 (Koushi Hiraoka) の個人ホームページ。九州大学 人間情報システム研究グループ 荒川研究室 博士後期課程2年 (D2)。",
   title: "平岡 滉司 (Koushi Hiraoka)",
-  ogImage: "astropaper-og.jpg",
+  email: "hiraoka.koushi.031@s.kyushu-u.ac.jp",
+  sameAs: ["https://github.com/KoushiHiraoka"],
+  ogImage: "og.png",
   lightAndDarkMode: false,
   postPerIndex: 4,
   postPerPage: 4,

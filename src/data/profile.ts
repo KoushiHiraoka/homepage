@@ -54,12 +54,12 @@ export const grants: { title: string; organization: string; period: string; link
 
 export const awards: { title: string; organization: string; year: string; month: string; link?: string}[] = [
     {   title: "DICOMO ヤングリサーチャー賞", 
-        organization: "マルチメディア、分散、協調とモバイル DICOMO2026 シンポジウム", 
+        organization: "マルチメディア、分散、協調とモバイル（DICOMO）シンポジウム", 
         year : "2026",
         month: "June", 
     },  
     {   title: "DICOMO ナイトテクニカルセッション優勝", 
-        organization: "マルチメディア、分散、協調とモバイル DICOMO2026 シンポジウム", 
+        organization: "マルチメディア、分散、協調とモバイル（DICOMO）シンポジウム", 
         year : "2026",
         month: "June", 
     },  

@@ -12,7 +12,7 @@ import { transformerFileName } from "./src/utils/transformers/fileName";
 import { SITE } from "./src/config";
 
 export default defineConfig({
-  site: "https://koushihiraoka.github.io/homepage",
+  site: new URL(SITE.website).origin,
   base: "/homepage",
   integrations: [
     sitemap({
@@ -58,17 +58,16 @@ export default defineConfig({
     },
   },
   experimental: {
-  preserveScriptOrder: true,
-  fonts: [
-    {
-      name: "Noto Sans JP",  // ← 日本語対応フォント
-      cssVariable: "--font-main",
-      provider: fontProviders.google(),
-      fallbacks: ["sans-serif"],
-      weights: [400, 500, 700],
-      styles: ["normal"],
-    },
-  ],
-},
+    preserveScriptOrder: true,
+    fonts: [
+      {
+        name: "Noto Sans JP", // ← 日本語対応フォント
+        cssVariable: "--font-main",
+        provider: fontProviders.google(),
+        fallbacks: ["sans-serif"],
+        weights: [400, 500, 700],
+        styles: ["normal"],
+      },
+    ],
+  },
 });
-

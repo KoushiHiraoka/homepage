@@ -21,6 +21,10 @@ export const SITE = {
     text: "",
     url: "",
   },
+  // GoatCounter (https://www.goatcounter.com/) のサイトコード。
+  // 例: コードが "koushihiraoka" なら https://koushihiraoka.goatcounter.com で閲覧できる。
+  // 空文字列にすると計測タグは出力されない。
+  goatCounterCode: "rapyon",
   dynamicOgImage: true,
   dir: "ltr", // "rtl" | "auto"
   lang: "ja", // html lang code. Set this empty and default will be "en"

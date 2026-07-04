@@ -238,6 +238,28 @@ const resolvedOgType = ogType ?? (pubDatetime ? "article" : "website");
 
       gtag("config", "G-ETHS7GP7HH");
     </script>
+
+    <!-- GoatCounter: SITE.goatCounterCode が設定されている場合のみ有効 -->
+    {
+      SITE.goatCounterCode && (
+        <>
+          <script
+            is:inline
+            async
+            data-goatcounter={`https://${SITE.goatCounterCode}.goatcounter.com/count`}
+            src="https://gc.zgo.at/count.js"
+          />
+          <script is:inline>
+            // ClientRouter によるページ遷移も計測する（初回表示は count.js が自動計測）
+            document.addEventListener("astro:after-swap", () => {
+              window.goatcounter?.count?.({
+                path: location.pathname + location.search,
+              });
+            });
+          </script>
+        </>
+      )
+    }
   </head>
   <body>
     <slot />

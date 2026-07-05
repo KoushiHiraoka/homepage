@@ -109,7 +109,7 @@ const homeStructuredData = {
         <img
           src={profileImage.src}
           alt="平岡 滉司 (Koushi Hiraoka) のプロフィール写真"
-          class="h-32 w-32 shrink-0 rounded-full object-cover sm:h-40 sm:w-40"
+          class="h-32 w-32 shrink-0 rounded-full object-cover shadow-[0_0_48px_rgba(212,175,55,0.18)] ring-2 ring-accent/70 ring-offset-4 ring-offset-background sm:h-40 sm:w-40"
         />
         <div>
           <h1 class="text-3xl leading-tight font-semibold sm:text-4xl">
@@ -125,6 +125,17 @@ const homeStructuredData = {
             荒川研究室<br />
             博士後期課程2年 (D2)
           </p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            {
+              [
+                "Human Activity Recognition",
+                "Privacy-Aware Sensing",
+                "Ubiquitous System",
+                "Wearable Computing",
+                "Human-Computer Interaction",
+              ].map(keyword => <span class="chip">{keyword}</span>)
+            }
+          </div>
           {
             SOCIALS.length > 0 && (
               <div class="mt-4 flex flex-col sm:flex-row sm:items-center">
@@ -139,7 +150,7 @@ const homeStructuredData = {
 
     <!-- News Section -->
     <!-- <section id="news" class="border-b border-border pt-12 pb-6">
-      <h2 class="mb-6 text-2xl font-semibold tracking-wide">News</h2>
+      <h2 class="section-title">News</h2>
       <ul class="space-y-3">
         {
           newsItems.slice(0, NEWS_DISPLAY_COUNT).map(item => (
@@ -199,7 +210,7 @@ const homeStructuredData = {
 
     <!-- About Section -->
     <section id="about-detail" class="pt-12 pb-6">
-      <h2 class="mb-6 text-2xl font-semibold tracking-wide">About</h2>
+      <h2 class="section-title">About</h2>
 
       <div class="space-y-6">
         <!-- <div>
@@ -213,24 +224,13 @@ const homeStructuredData = {
             ))}
           </ul>
         </div> -->
-        <div>
-          <h3 class="mb-2 text-lg font-medium text-accent">
-            Research Interests
-          </h3>
-          <ul class="list-inside list-disc space-y-1 text-foreground/80">
-            Human Activity Recognition, Privacy-Aware Sensing, Ubiquitous System, Wearable Computing, Human-Computer Interaction
-            <!-- {researchInterests.map((interest) => (
-              <li>{interest}</li>
-            ))} -->
-          </ul>
-        </div>
         {
           awards.length > 0 && (
             <div>
               <h3 class="mb-2 text-lg font-medium text-accent">Awards</h3>
               <ul class="space-y-2">
                 {awards.map(award => (
-                  <li>
+                  <li class="pub-item">
                     <p class="font-medium whitespace-pre-line">{award.title}</p>
                     <p class="text-sm text-foreground/60">
                       {award.organization}, {award.year}, {award.month}
@@ -239,9 +239,9 @@ const homeStructuredData = {
                       <div class="mt-1 flex gap-2 text-sm">
                         <a
                           href={award.link}
-                          class="text-accent hover:underline"
+                          class="link-pill"
                         >
-                          [Link]
+                          Link
                         </a>
                       </div>
                     )}
@@ -257,7 +257,7 @@ const homeStructuredData = {
               <h3 class="mb-2 text-lg font-medium text-accent">Grants</h3>
               <ul class="space-y-2">
                 {grants.map(grant => (
-                  <li>
+                  <li class="pub-item">
                     <p class="font-medium whitespace-pre-line">{grant.title}</p>
                     <p class="text-sm text-foreground/60">
                       {grant.organization}, {grant.period}
@@ -266,9 +266,9 @@ const homeStructuredData = {
                       <div class="mt-1 flex gap-2 text-sm">
                         <a
                           href={grant.link}
-                          class="text-accent hover:underline"
+                          class="link-pill"
                         >
-                          [Link]
+                          Link
                         </a>
                       </div>
                     )}
@@ -283,7 +283,7 @@ const homeStructuredData = {
 
     <!-- Publications Section -->
     <section id="publications" class="border-b border-border pt-12 pb-6">
-      <h2 class="mb-6 text-2xl font-semibold tracking-wide">Publications</h2>
+      <h2 class="section-title">Publications</h2>
 
       {
         journals.length > 0 && (
@@ -291,7 +291,7 @@ const homeStructuredData = {
             <h3 class="mb-4 text-lg font-medium text-accent">Journal Papers</h3>
             <ul class="space-y-4">
               {journals.map(pub => (
-                <li>
+                <li class="pub-item">
                   <p class="font-medium">{pub.title}</p>
                   <p
                     class="text-sm text-foreground/70"
@@ -306,8 +306,8 @@ const homeStructuredData = {
                     </p>
                   )}
                   {pub.award && (
-                    <p class="text-[14px] text-foreground/60 text-red-500">
-                      {pub.award}
+                    <p class="mt-1">
+                      <span class="award-badge"> {pub.award}</span>
                     </p>
                   )}
                   {pub.links && (
@@ -315,17 +315,17 @@ const homeStructuredData = {
                       {pub.links.paper && (
                         <a
                           href={pub.links.paper}
-                          class="text-accent hover:underline"
+                          class="link-pill"
                         >
-                          [Paper]
+                          Paper
                         </a>
                       )}
                       {pub.links.slide && (
                         <a
                           href={pub.links.slide}
-                          class="text-accent hover:underline"
+                          class="link-pill"
                         >
-                          [Slide]
+                          Slide
                         </a>
                       )}
                     </div>
@@ -345,7 +345,7 @@ const homeStructuredData = {
             </h3>
             <ul class="space-y-4">
               {internationalConferences.map(pub => (
-                <li>
+                <li class="pub-item">
                   <p class="font-medium">{pub.title}</p>
                   <p
                     class="text-sm text-foreground/70"
@@ -360,8 +360,8 @@ const homeStructuredData = {
                     </p>
                   )}
                   {pub.award && (
-                    <p class="text-[14px] text-foreground/60 text-red-500">
-                      {pub.award}
+                    <p class="mt-1">
+                      <span class="award-badge"> {pub.award}</span>
                     </p>
                   )}
                   {pub.links && (
@@ -369,17 +369,17 @@ const homeStructuredData = {
                       {pub.links.paper && (
                         <a
                           href={pub.links.paper}
-                          class="text-accent hover:underline"
+                          class="link-pill"
                         >
-                          [Paper]
+                          Paper
                         </a>
                       )}
                       {pub.links.slide && (
                         <a
                           href={pub.links.slide}
-                          class="text-accent hover:underline"
+                          class="link-pill"
                         >
-                          [Slide]
+                          Slide
                         </a>
                       )}
                     </div>
@@ -399,7 +399,7 @@ const homeStructuredData = {
             </h3>
             <ul class="space-y-4">
               {domesticConferences.map(pub => (
-                <li>
+                <li class="pub-item">
                   <p class="font-medium">{pub.title}</p>
                   <p
                     class="text-sm text-foreground/70"
@@ -414,8 +414,8 @@ const homeStructuredData = {
                     </p>
                   )}
                   {pub.award && (
-                    <p class="text-[14px] text-foreground/60 text-red-500">
-                      {pub.award}
+                    <p class="mt-1">
+                      <span class="award-badge"> {pub.award}</span>
                     </p>
                   )}
                   {pub.links && (
@@ -423,17 +423,17 @@ const homeStructuredData = {
                       {pub.links.paper && (
                         <a
                           href={pub.links.paper}
-                          class="text-accent hover:underline"
+                          class="link-pill"
                         >
-                          [Paper]
+                          Paper
                         </a>
                       )}
                       {pub.links.slide && (
                         <a
                           href={pub.links.slide}
-                          class="text-accent hover:underline"
+                          class="link-pill"
                         >
-                          [Slide]
+                          Slide
                         </a>
                       )}
                     </div>
@@ -458,20 +458,20 @@ const homeStructuredData = {
     {
       products.length > 0 && (
         <section id="products" class="border-b border-border pt-12 pb-6">
-          <h2 class="mb-6 text-2xl font-semibold tracking-wide">Products</h2>
+          <h2 class="section-title">Products</h2>
           <ul class="space-y-4">
             {products.map(p => (
-              <li>
+              <li class="pub-item">
                 <p class="font-medium">{p.title}</p>
                 <p class="text-sm text-foreground/70">{p.description}</p>
                 <div class="mt-1 flex gap-2 text-sm">
                   <a
                     href={p.url}
-                    class="text-accent hover:underline"
+                    class="link-pill"
                     target="_blank"
                     rel="noopener"
                   >
-                    [Site]
+                    Site
                   </a>
                 </div>
               </li>

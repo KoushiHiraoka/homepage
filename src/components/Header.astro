@@ -15,20 +15,20 @@ import { SITE } from "@/config";
 </a>
 
 <header
-  class="fixed-header app-layout flex flex-col items-center justify-between sm:flex-row"
+  class="app-layout sticky top-0 z-40 flex flex-col items-center justify-between sm:flex-row"
 >
   <div
     id="top-nav-wrap"
     class:list={[
       "py-4 sm:py-6",
       "border-b border-border",
-      "relative w-full bg-background",
+      "relative w-full bg-background/85 backdrop-blur-md",
       "flex items-baseline justify-between sm:items-center",
     ]}
   >
     <a
       href={`${import.meta.env.BASE_URL}`}
-      class="absolute py-1 text-xl leading-8 font-semibold whitespace-nowrap sm:static sm:my-auto sm:text-2xl sm:leading-none"
+      class="absolute py-1 text-xl leading-8 font-semibold whitespace-nowrap transition-colors hover:text-accent sm:static sm:my-auto sm:text-2xl sm:leading-none"
     >
       {SITE.title}
     </a>
@@ -56,9 +56,9 @@ import { SITE } from "@/config";
           "fixed rounded-md bg-background p-2 shadow-md",
         ]}
       >
-        <li class="col-span-2">
+        <!-- <li class="col-span-2">
           <a href={`${import.meta.env.BASE_URL}#news`}> News </a>
-        </li>
+        </li> -->
         <li class="col-span-2">
           <a href={`${import.meta.env.BASE_URL}#about-detail`}> About</a>
         </li>

@@ -15,10 +15,36 @@ html[data-theme="light"] {
 html[data-theme="dark"] {
   --background: #0d1117;
   --foreground: #eaedf3;
-  --accent: #D4AF37;
-  --border: #7d662b; 
+  --accent: #d4af37;
+  --border: #2b3240;
   --muted: #1f2937;
   --info: #38bdf8;
+}
+
+/* ダークテーマ: ページ上部にゴールドの微かな光彩を敷く */
+html[data-theme="dark"] body {
+  background-image: radial-gradient(
+    70rem 36rem at 50% -14rem,
+    rgb(212 175 55 / 0.08),
+    transparent 70%
+  );
+  background-repeat: no-repeat;
+}
+
+/* ダークテーマ: 画面最上部のゴールドのヘアライン */
+html[data-theme="dark"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 2px;
+  z-index: 60;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(212 175 55 / 0.65),
+    transparent
+  );
 }
 
 @theme inline {
@@ -64,13 +90,40 @@ html[data-theme="dark"] {
   @apply underline decoration-wavy decoration-2 underline-offset-8;
 }
 
+@layer components {
+  /* セクション見出し: タイトルの右にフェードするゴールドの罫線 */
+  .section-title {
+    @apply mb-6 flex items-center gap-4 text-2xl font-semibold tracking-wide;
+  }
+  .section-title::after {
+    content: "";
+    @apply h-px flex-1 bg-linear-to-r from-accent/50 to-transparent;
+  }
+
+  /* 研究キーワードなどのチップ */
+  .chip {
+    @apply inline-flex items-center rounded-full border border-border bg-muted/40 px-3 py-1 text-xs tracking-wide text-foreground/80;
+  }
+
+  /* [Paper] [Slide] などのリンクをピル型ボタンに */
+  .link-pill {
+    @apply inline-flex items-center rounded-full border border-accent/40 px-2.5 py-0.5 text-xs font-medium text-accent transition-colors hover:border-accent hover:bg-accent/10 hover:no-underline;
+  }
+
+  /* 受賞バッジ */
+  .award-badge {
+    @apply inline-flex items-center gap-1 rounded-full border border-accent/40 bg-accent/10 px-2.5 py-0.5 text-xs font-medium text-accent;
+  }
+
+  /* 業績リストの各項目: 左ボーダーのタイムライン風 */
+  .pub-item {
+    @apply border-s-2 border-border ps-4 transition-colors hover:border-accent/70;
+  }
+}
+
 /* Source: https://piccalil.li/blog/a-more-modern-css-reset/ */
 /* Anything that has been anchored to should have extra scroll margin */
 :target {
-  scroll-margin-block: 1rem;
-}
-
-.text-red-500 {
-  color: #E0115F;
-  font-weight: bold; 
+  /* 追従ヘッダーに隠れないよう上側に余白を確保 */
+  scroll-margin-block: 6rem 1rem;
 }

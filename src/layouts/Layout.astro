@@ -3,6 +3,7 @@ import { Font } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
 import { PUBLIC_GOOGLE_SITE_VERIFICATION } from "astro:env/client";
 import { SITE } from "@/config";
+import { toSiteURL } from "@/utils/toSiteURL";
 import "@/styles/global.css";
 
 type Props = {
@@ -17,6 +18,8 @@ type Props = {
   modDatetime?: Date | null;
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
   scrollSmooth?: boolean;
+  lang?: string;
+  languageAlternates?: { lang: string; href: string }[];
 };
 
 const {
@@ -31,12 +34,11 @@ const {
   modDatetime,
   structuredData: customStructuredData,
   scrollSmooth = false,
+  lang = SITE.lang,
+  languageAlternates = [],
 } = Astro.props;
 
 const siteBaseURL = new URL(SITE.website);
-const siteBasePath = siteBaseURL.pathname.endsWith("/")
-  ? siteBaseURL.pathname
-  : `${siteBaseURL.pathname}/`;
 const currentPathname = Astro.url.pathname;
 const canonicalPathname =
   currentPathname.endsWith("/") || currentPathname.includes(".")
@@ -45,18 +47,6 @@ const canonicalPathname =
 const canonicalURL = canonicalURLProp
   ? new URL(canonicalURLProp, siteBaseURL)
   : new URL(canonicalPathname, Astro.url);
-
-const toSiteURL = (pathOrURL: string) => {
-  try {
-    return new URL(pathOrURL);
-  } catch {
-    const cleanPath = pathOrURL.startsWith(siteBasePath)
-      ? pathOrURL.slice(siteBasePath.length)
-      : pathOrURL.replace(/^\/+/, "");
-
-    return new URL(cleanPath, siteBaseURL);
-  }
-};
 
 const socialImageURL = toSiteURL(ogImage);
 const faviconURL = new URL("favicon.svg", siteBaseURL);
@@ -100,7 +90,7 @@ const defaultStructuredData = pubDatetime
       description,
       url: canonicalURL.href,
       image: socialImageURL.href,
-      inLanguage: SITE.lang,
+      inLanguage: lang,
       author: personData,
     };
 
@@ -111,7 +101,7 @@ const resolvedOgType = ogType ?? (pubDatetime ? "article" : "website");
 <!doctype html>
 <html
   dir={SITE.dir}
-  lang=`${SITE.lang ?? "en"}`
+  lang={lang}
   class={`${scrollSmooth && "scroll-smooth"}`}
 >
   <head>
@@ -119,6 +109,7 @@ const resolvedOgType = ogType ?? (pubDatetime ? "article" : "website");
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href={faviconURL} />
     <link rel="canonical" href={canonicalURL} />
+    {languageAlternates.map(alternate => <link rel="alternate" hreflang={alternate.lang} href={alternate.href} />)}
     <meta name="generator" content={Astro.generator} />
 
     <!-- Load Font -->
@@ -171,7 +162,7 @@ const resolvedOgType = ogType ?? (pubDatetime ? "article" : "website");
     <script
       type="application/ld+json"
       is:inline
-      set:html={JSON.stringify(structuredData)}
+      set:html={JSON.stringify(structuredData).replace(/</g, "\\u003c")}
     />
 
     <!-- Enable RSS feed auto-discovery  -->

@@ -1,0 +1,61 @@
+---
+import { safeExternalURL } from "@/utils/safeExternalURL";
+import {
+  education,
+  internships,
+  type Locale,
+  type Internship,
+} from "@/data/home";
+interface Props {
+  locale: Locale;
+  internshipItems?: Internship[];
+}
+const { locale, internshipItems = internships } = Astro.props;
+---
+
+<section id="career" class="border-b border-border pt-12 pb-6">
+  <h2 class="section-title">Career</h2>
+  <div class="space-y-6">
+    <div>
+      <h3 class="mb-2 text-lg font-medium text-accent">Education</h3>
+      <ul class="space-y-4">
+        {
+          education.map(item => (
+            <li class="pub-item">
+              <p class="font-medium">{item.institution[locale]}</p>
+              <p class="text-sm text-foreground/70">{item.degree[locale]}</p>
+              <p class="text-sm text-foreground/60">{item.period[locale]}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    {
+      internshipItems.length > 0 && (
+        <div>
+          <h3 class="mb-2 text-lg font-medium text-accent">Internships</h3>
+          <ul class="space-y-4">
+            {internshipItems.map(item => (
+              <li class="pub-item">
+                <p class="font-medium">
+                  {safeExternalURL(item.url) ? (
+                    <a
+                      href={safeExternalURL(item.url)}
+                      class="underline decoration-accent/40 underline-offset-4 hover:text-accent"
+                    >
+                      {item.company[locale]}
+                    </a>
+                  ) : (
+                    item.company[locale]
+                  )}
+                </p>
+                <p class="text-sm text-foreground/70">{item.role[locale]}</p>
+                <p class="text-sm text-foreground/60">{item.period[locale]}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+  </div>
+</section>

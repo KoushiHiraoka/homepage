@@ -1,20 +1,12 @@
-export const education = [
-{
-    institution: "九州大学 大学院システム情報科学府 情報理工学専攻",
-    degree: "博士後期課程 (博士)",
-    period: "2025年4月 - 現在",
-  },
-  {
-    institution: "九州大学 大学院システム情報科学府 情報理工学専攻",
-    degree: "博士前期課程 (修士)",
-    period: "2023年4月 - 2025年3月",
-  },
-{
-    institution: "愛媛大学 工学部 工学科 電気電子工学コース",
-    degree: "学士",
-    period: "2019年4月 - 2023年3月",
-  },
-];
+import { education as bilingualEducation } from "./home";
+
+// 既存の日本語データ形式を維持。学歴の編集元は home.ts です。
+export const education = bilingualEducation.map(item => ({
+  institution: item.institution.ja,
+  degree: item.degree.ja,
+  period: item.period.ja,
+}));
+
 
 
 export const researchInterests = [
@@ -26,7 +18,7 @@ export const grants: { title: string; organization: string; period: string; link
     {   title: "PARKS アントレプレナー教育学⽣海外派遣プログラム", 
         organization: "PARKS (Platform for All Regions of Kyushu & Okinawa for Startup-ecosystem)", 
         period : "2026年2月-2026年3月", 
-        link: "https://www.parks-startup.jp/"
+
     },
     {   title: "2025年度 福岡未踏 【Pro】採択 \n「SAW-Ring：表面弾性波センシングを活用したテクスチャ駆動リング型デバイス」", 
         organization: "福岡未踏的人材発掘・育成コンソーシアム (福岡未踏)", 
@@ -35,7 +27,8 @@ export const grants: { title: string; organization: string; period: string; link
     },
     {   title: "『基盤』と『応用』の相乗効果で未来を拓く高度AI人財育成プログラム (K-BOOST) 採択", 
         organization: "科学技術振興機構 (JST)", 
-        period : "2025年4月 - 現在" 
+        period : "2025年4月 - 現在",
+        link: "https://www.kyushu-u.ac.jp/ja/faculty/program/k-boost/"
     },
     {   title: "令和6年度 ＳＣＡＴ研究奨励金 (採用辞退)", 
         organization: "一般財団法人 テレコム先端技術研究支援センター", 
@@ -47,8 +40,7 @@ export const grants: { title: string; organization: string; period: string; link
     },
     {   title: "PolyU International Research Summer School 2024", 
         organization: "香港理工大学（PolyU）", 
-        period : "2024年7月",
-        link: "https://www.polyu.edu.hk/gs/news-and-events/news/2024/0701-13_irss-2024/"
+        period : "2024年7月"
     },
 ];
 
@@ -67,12 +59,12 @@ export const awards: { title: string; organization: string; year: string; month:
         organization: "ユビキタスコンピューティングシステム (UBI) 研究会", 
         year : "2026",
         month: "June", 
+        link: "https://sigubi.ipsj.or.jp/contributor/"
     },  
     {   title: "技育博Vo.1 【企業賞】株式会社 CARTA HOLDINGS賞 \n 「みんなでセット麻雀」", 
         organization: "技育プロジェクト", 
         year : "2026",
-        month: "May", 
-        link: "https://x.com/geek_pjt/status/2060677261968465991"
+        month: "May"
     },  
     {   title: "異能vation ジェネレーションアワード \n 『あなたをコントローラーに「SAW-Ring」』", 
         organization: "2025年度 異能vation", 

@@ -3,6 +3,7 @@ import { Font } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
 import { PUBLIC_GOOGLE_SITE_VERIFICATION } from "astro:env/client";
 import { SITE } from "@/config";
+import { toSiteURL } from "@/utils/toSiteURL";
 import "@/styles/global.css";
 
 type Props = {
@@ -34,9 +35,6 @@ const {
 } = Astro.props;
 
 const siteBaseURL = new URL(SITE.website);
-const siteBasePath = siteBaseURL.pathname.endsWith("/")
-  ? siteBaseURL.pathname
-  : `${siteBaseURL.pathname}/`;
 const currentPathname = Astro.url.pathname;
 const canonicalPathname =
   currentPathname.endsWith("/") || currentPathname.includes(".")
@@ -45,18 +43,6 @@ const canonicalPathname =
 const canonicalURL = canonicalURLProp
   ? new URL(canonicalURLProp, siteBaseURL)
   : new URL(canonicalPathname, Astro.url);
-
-const toSiteURL = (pathOrURL: string) => {
-  try {
-    return new URL(pathOrURL);
-  } catch {
-    const cleanPath = pathOrURL.startsWith(siteBasePath)
-      ? pathOrURL.slice(siteBasePath.length)
-      : pathOrURL.replace(/^\/+/, "");
-
-    return new URL(cleanPath, siteBaseURL);
-  }
-};
 
 const socialImageURL = toSiteURL(ogImage);
 const faviconURL = new URL("favicon.svg", siteBaseURL);

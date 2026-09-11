@@ -2,15 +2,13 @@
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import Socials from "@/components/Socials.astro";
-import LinkButton from "@/components/LinkButton.astro";
-import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
-import { SOCIALS } from "@/constants";
+import ProfileHero from "@/components/home/ProfileHero.astro";
+import ProductsSection from "@/components/home/ProductsSection.astro";
+import { getHomeStructuredData } from "@/utils/getHomeStructuredData";
 import { SITE } from "@/config";
 import profileImage from "@/assets/images/profile-2.png";
 
 // データをインポート
-import { newsItems, NEWS_DISPLAY_COUNT } from "@/data/news";
 import {
   journals,
   internationalConferences,
@@ -18,7 +16,6 @@ import {
   myNames,
 } from "@/data/publications";
 import { awards, grants } from "@/data/profile";
-import { products } from "@/data/products";
 const highlightMyName = (authors: string) => {
   let result = authors;
   myNames.forEach(name => {
@@ -30,70 +27,7 @@ const highlightMyName = (authors: string) => {
   return result;
 };
 
-const siteURL = new URL(SITE.website);
-const siteBasePath = siteURL.pathname.endsWith("/")
-  ? siteURL.pathname
-  : `${siteURL.pathname}/`;
-const toSiteURL = (pathOrURL: string) => {
-  try {
-    return new URL(pathOrURL);
-  } catch {
-    const cleanPath = pathOrURL.startsWith(siteBasePath)
-      ? pathOrURL.slice(siteBasePath.length)
-      : pathOrURL.replace(/^\/+/, "");
-
-    return new URL(cleanPath, siteURL);
-  }
-};
-
-const profileImageURL = toSiteURL(profileImage.src);
-const homeStructuredData = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebSite",
-      "@id": new URL("#website", siteURL).href,
-      name: SITE.title,
-      url: siteURL.href,
-      description: SITE.desc,
-      inLanguage: SITE.lang,
-    },
-    {
-      "@type": "Person",
-      "@id": new URL("#person", siteURL).href,
-      name: SITE.name,
-      alternateName: [SITE.nameEn, SITE.author],
-      url: SITE.profile,
-      image: profileImageURL.href,
-      email: SITE.email,
-      jobTitle: "博士後期課程学生",
-      affiliation: {
-        "@type": "CollegeOrUniversity",
-        name: "九州大学",
-        url: "https://www.kyushu-u.ac.jp/",
-      },
-      knowsAbout: [
-        "Human Activity Recognition",
-        "Privacy-Aware System",
-        "Subjective Privacy",
-        "Ubiquitous Computing",
-        "Wearable Computing",
-      ],
-      sameAs: SITE.sameAs,
-    },
-    {
-      "@type": "ProfilePage",
-      "@id": new URL("#profile-page", siteURL).href,
-      name: SITE.title,
-      url: siteURL.href,
-      description: SITE.desc,
-      image: profileImageURL.href,
-      mainEntity: {
-        "@id": new URL("#person", siteURL).href,
-      },
-    },
-  ],
-};
+const homeStructuredData = getHomeStructuredData(profileImage.src);
 ---
 
 <Layout
@@ -103,110 +37,7 @@ const homeStructuredData = {
 >
   <Header />
   <main id="main-content" data-layout="index" class="app-layout">
-    <!-- Hero Section (自己紹介) -->
-    <section id="hero" class:list={["pt-8 pb-6", "border-b border-border"]}>
-      <div class="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
-        <img
-          src={profileImage.src}
-          alt="平岡 滉司 (Koushi Hiraoka) のプロフィール写真"
-          class="h-32 w-32 shrink-0 rounded-full object-cover shadow-[0_0_48px_rgba(212,175,55,0.18)] ring-2 ring-accent/70 ring-offset-4 ring-offset-background sm:h-40 sm:w-40"
-        />
-        <div>
-          <h1 class="text-3xl leading-tight font-semibold sm:text-4xl">
-            平岡 滉司
-            <span
-              class="block text-xl font-medium text-foreground/70 sm:text-2xl"
-            >
-              Koushi Hiraoka
-            </span>
-          </h1>
-          <p class="mt-4">
-            九州大学 人間情報システム研究グループ<br />
-            荒川研究室<br />
-            博士後期課程2年 (D2)
-          </p>
-          <div class="mt-4 flex flex-wrap gap-2">
-            {
-              [
-                "Human Activity Recognition",
-                "Privacy-Aware Sensing",
-                "Ubiquitous System",
-                "Wearable Computing",
-                "Human-Computer Interaction",
-              ].map(keyword => <span class="chip">{keyword}</span>)
-            }
-          </div>
-          {
-            SOCIALS.length > 0 && (
-              <div class="mt-4 flex flex-col sm:flex-row sm:items-center">
-                <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">Links:</div>
-                <Socials />
-              </div>
-            )
-          }
-        </div>
-      </div>
-    </section>
-
-    <!-- News Section -->
-    <!-- <section id="news" class="border-b border-border pt-12 pb-6">
-      <h2 class="section-title">News</h2>
-      <ul class="space-y-3">
-        {
-          newsItems.slice(0, NEWS_DISPLAY_COUNT).map(item => (
-            <li>
-              {item.url ? (
-                <a
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener"
-                  class="flex gap-4 rounded-lg border border-border p-4 transition-colors hover:bg-foreground/5"
-                >
-                  {item.ogImage && (
-                    <img
-                      src={item.ogImage}
-                      alt={item.ogTitle ?? item.content}
-                      class="h-20 w-20 shrink-0 rounded object-cover"
-                    />
-                  )}
-                  <div class="flex flex-col gap-1">
-                    <span class="text-sm text-foreground/60">
-                      {item.date}
-                      {item.source && ` · ${item.source}`}
-                    </span>
-                    <span class="font-medium">
-                      {item.ogTitle ?? item.content}
-                    </span>
-                    {item.ogDescription && (
-                      <span class="line-clamp-2 text-sm text-foreground/70">
-                        {item.ogDescription}
-                      </span>
-                    )}
-                  </div>
-                </a>
-              ) : (
-                <div class="flex flex-col sm:flex-row sm:gap-4">
-                  <span class="shrink-0 text-sm text-foreground/60 sm:w-24">
-                    {item.date}
-                  </span>
-                  <span>{item.content}</span>
-                </div>
-              )}
-            </li>
-          ))
-        }
-      </ul>
-      {
-        newsItems.length > NEWS_DISPLAY_COUNT && (
-          <div class="mt-4">
-            <LinkButton href="/news/">
-              All News
-              <IconArrowRight class="inline-block rtl:-rotate-180" />
-            </LinkButton>
-          </div>
-        )
-      }
-    </section> -->
+    <ProfileHero />
 
     <!-- About Section -->
     <section id="about-detail" class="pt-12 pb-6">
@@ -454,33 +285,7 @@ const homeStructuredData = {
       }
     </section>
 
-    <!-- Products Section -->
-    {
-      products.length > 0 && (
-        <section id="products" class="border-b border-border pt-12 pb-6">
-          <h2 class="section-title">Products</h2>
-          <ul class="space-y-4">
-            {products.map(p => (
-              <li class="pub-item">
-                <p class="font-medium">{p.title}</p>
-                <p class="text-sm text-foreground/70">{p.description}</p>
-                <div class="mt-1 flex gap-2 text-sm">
-                  <a
-                    href={p.url}
-                    class="link-pill"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    Site
-                  </a>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )
-    }
-
+    <ProductsSection />
   </main>
   <Footer />
 </Layout>

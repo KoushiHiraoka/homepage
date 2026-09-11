@@ -1,0 +1,24 @@
+---
+import { products } from "@/data/products";
+---
+
+<!-- Products Section -->{
+  products.length > 0 && (
+    <section id="products" class="border-b border-border pt-12 pb-6">
+      <h2 class="section-title">Products</h2>
+      <ul class="space-y-4">
+        {products.map(p => (
+          <li class="pub-item">
+            <p class="font-medium">{p.title}</p>
+            <p class="text-sm text-foreground/70">{p.description}</p>
+            <div class="mt-1 flex gap-2 text-sm">
+              <a href={p.url} class="link-pill" target="_blank" rel="noopener">
+                Site
+              </a>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

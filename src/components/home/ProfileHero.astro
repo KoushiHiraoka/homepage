@@ -1,0 +1,48 @@
+---
+import Socials from "@/components/Socials.astro";
+import { SOCIALS } from "@/constants";
+import profileImage from "@/assets/images/profile-2.png";
+---
+
+<!-- Hero Section (自己紹介) -->
+<section id="hero" class:list={["pt-8 pb-6", "border-b border-border"]}>
+  <div class="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
+    <img
+      src={profileImage.src}
+      alt="平岡 滉司 (Koushi Hiraoka) のプロフィール写真"
+      class="h-32 w-32 shrink-0 rounded-full object-cover shadow-[0_0_48px_rgba(212,175,55,0.18)] ring-2 ring-accent/70 ring-offset-4 ring-offset-background sm:h-40 sm:w-40"
+    />
+    <div>
+      <h1 class="text-3xl leading-tight font-semibold sm:text-4xl">
+        平岡 滉司
+        <span class="block text-xl font-medium text-foreground/70 sm:text-2xl">
+          Koushi Hiraoka
+        </span>
+      </h1>
+      <p class="mt-4">
+        九州大学 人間情報システム研究グループ<br />
+        荒川研究室<br />
+        博士後期課程2年 (D2)
+      </p>
+      <div class="mt-4 flex flex-wrap gap-2">
+        {
+          [
+            "Human Activity Recognition",
+            "Privacy-Aware Sensing",
+            "Ubiquitous System",
+            "Wearable Computing",
+            "Human-Computer Interaction",
+          ].map(keyword => <span class="chip">{keyword}</span>)
+        }
+      </div>
+      {
+        SOCIALS.length > 0 && (
+          <div class="mt-4 flex flex-col sm:flex-row sm:items-center">
+            <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">Links:</div>
+            <Socials />
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>

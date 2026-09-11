@@ -1,0 +1,36 @@
+---
+import type { Locale } from "@/data/home";
+import { homePath } from "@/utils/homePath";
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+---
+
+<nav
+  aria-label={locale === "ja" ? "言語切り替え" : "Language"}
+  class="flex justify-end pt-4"
+>
+  <div class="inline-flex rounded-full border border-accent/40 p-1">
+    {
+      (["ja", "en"] as const).map(language => (
+        <a
+          href={homePath(language)}
+          data-astro-reload
+          lang={language}
+          hreflang={language}
+          aria-label={language === "ja" ? "日本語" : "English"}
+          aria-current={locale === language ? "page" : undefined}
+          class:list={[
+            "rounded-full px-4 py-2 text-sm font-medium",
+            locale === language
+              ? "bg-accent text-background"
+              : "text-foreground/70 hover:text-accent",
+          ]}
+        >
+          {language === "ja" ? "JP" : "EN"}
+        </a>
+      ))
+    }
+  </div>
+</nav>

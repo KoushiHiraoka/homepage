@@ -1,0 +1,73 @@
+---
+import {
+  journals,
+  internationalConferences,
+  domesticConferences,
+} from "@/data/publications";
+import type { Locale } from "@/data/home";
+import PublicationAuthors from "./PublicationAuthors.astro";
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const groups = [
+  { title: "Journal Papers", items: journals },
+  { title: "International Conference", items: internationalConferences },
+  ...(locale === "ja"
+    ? [{ title: "Domestic Conference", items: domesticConferences }]
+    : []),
+];
+---
+
+<section id="publications" class="border-b border-border pt-12 pb-6">
+  <h2 class="section-title">Publications</h2>
+  {
+    groups
+      .filter(group => group.items.length > 0)
+      .map(group => (
+        <div class="mb-8">
+          <h3 class="mb-4 text-lg font-medium text-accent">{group.title}</h3>
+          <ul class="space-y-4">
+            {group.items.map(pub => (
+              <li class="pub-item">
+                <p class="font-medium">{pub.title}</p>
+                <PublicationAuthors authors={pub.authors} />
+                <p class="text-sm text-foreground/70">
+                  {pub.venue}, {pub.year}, {pub.month}
+                </p>
+                {pub.links?.doi && (
+                  <p class="text-sm text-foreground/60">
+                    DOI: {pub.links.doi}.
+                  </p>
+                )}
+                {pub.award && locale === "ja" && (
+                  <p class="mt-1">
+                    <span class="award-badge"> {pub.award}</span>
+                  </p>
+                )}
+                {pub.links && (
+                  <div class="mt-1 flex gap-2 text-sm">
+                    {pub.links.paper && (
+                      <a href={pub.links.paper} class="link-pill">
+                        Paper
+                      </a>
+                    )}
+                    {pub.links.slide && (
+                      <a href={pub.links.slide} class="link-pill">
+                        Slide
+                      </a>
+                    )}
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+  }
+  {
+    groups.every(group => group.items.length === 0) && (
+      <p class="text-foreground/60">Coming soon...</p>
+    )
+  }
+</section>

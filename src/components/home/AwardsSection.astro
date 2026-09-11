@@ -1,0 +1,59 @@
+---
+import { awards, grants } from "@/data/profile";
+---
+
+<!-- About Section -->
+<section id="about-detail" class="pt-12 pb-6">
+  <h2 class="section-title">About</h2>
+
+  <div class="space-y-6">
+    {
+      awards.length > 0 && (
+        <div>
+          <h3 class="mb-2 text-lg font-medium text-accent">Awards</h3>
+          <ul class="space-y-2">
+            {awards.map(award => (
+              <li class="pub-item">
+                <p class="font-medium whitespace-pre-line">{award.title}</p>
+                <p class="text-sm text-foreground/60">
+                  {award.organization}, {award.year}, {award.month}
+                </p>
+                {award.link && (
+                  <div class="mt-1 flex gap-2 text-sm">
+                    <a href={award.link} class="link-pill">
+                      Link
+                    </a>
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+    {
+      grants.length > 0 && (
+        <div>
+          <h3 class="mb-2 text-lg font-medium text-accent">Grants</h3>
+          <ul class="space-y-2">
+            {grants.map(grant => (
+              <li class="pub-item">
+                <p class="font-medium whitespace-pre-line">{grant.title}</p>
+                <p class="text-sm text-foreground/60">
+                  {grant.organization}, {grant.period}
+                </p>
+                {grant.link && (
+                  <div class="mt-1 flex gap-2 text-sm">
+                    <a href={grant.link} class="link-pill">
+                      Link
+                    </a>
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+  </div>
+</section>

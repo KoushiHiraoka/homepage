@@ -4,6 +4,14 @@ import IconMoon from "@/assets/icons/IconMoon.svg";
 import IconSunHigh from "@/assets/icons/IconSunHigh.svg";
 import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
 import { SITE } from "@/config";
+import type { Locale } from "@/data/home";
+import { homePath } from "@/utils/homePath";
+interface Props {
+  locale?: Locale;
+  showCareer?: boolean;
+}
+const { locale = "ja", showCareer = false } = Astro.props;
+const home = homePath(locale);
 ---
 
 <a
@@ -15,7 +23,7 @@ import { SITE } from "@/config";
 </a>
 
 <header
-  class="app-layout sticky top-0 z-40 flex flex-col items-center justify-between sm:flex-row"
+  class="sticky top-0 z-40 app-layout flex flex-col items-center justify-between sm:flex-row"
 >
   <div
     id="top-nav-wrap"
@@ -27,10 +35,10 @@ import { SITE } from "@/config";
     ]}
   >
     <a
-      href={`${import.meta.env.BASE_URL}`}
+      href={home}
       class="absolute py-1 text-xl leading-8 font-semibold whitespace-nowrap transition-colors hover:text-accent sm:static sm:my-auto sm:text-2xl sm:leading-none"
     >
-      {SITE.title}
+      {locale === "en" ? SITE.nameEn : SITE.title}
     </a>
     <nav
       id="nav-menu"
@@ -60,10 +68,17 @@ import { SITE } from "@/config";
           <a href={`${import.meta.env.BASE_URL}#news`}> News </a>
         </li> -->
         <li class="col-span-2">
-          <a href={`${import.meta.env.BASE_URL}#about-detail`}> About</a>
+          <a href={`${home}#${showCareer ? "hero" : "about-detail"}`}> About</a>
         </li>
+        {
+          showCareer && (
+            <li class="col-span-2">
+              <a href={`${home}#career`}>Career</a>
+            </li>
+          )
+        }
         <li class="col-span-2">
-          <a href={`${import.meta.env.BASE_URL}#publications`}> Publications</a>
+          <a href={`${home}#publications`}> Publications</a>
         </li>
         <!-- {
           SITE.showArchives && (

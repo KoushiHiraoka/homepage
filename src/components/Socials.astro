@@ -1,6 +1,16 @@
 ---
 import { SOCIALS } from "@/constants";
 import LinkButton from "./LinkButton.astro";
+import type { Locale } from "@/data/home";
+interface Props {
+  locale?: Locale;
+}
+const { locale = "ja" } = Astro.props;
+const englishTitles: Record<string, string> = {
+  GitHub: "Koushi Hiraoka on GitHub",
+  Lab: "Arakawa Laboratory, Kyushu University",
+  Mail: "Send an email",
+};
 ---
 
 <div class="flex flex-wrap items-center gap-1">
@@ -9,10 +19,18 @@ import LinkButton from "./LinkButton.astro";
       <LinkButton
         href={social.href}
         class="p-2 hover:rotate-6 sm:p-1"
-        title={social.linkTitle}
+        title={
+          locale === "en"
+            ? (englishTitles[social.name] ?? social.linkTitle)
+            : social.linkTitle
+        }
       >
         <social.icon class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" />
-        <span class="sr-only">{social.linkTitle}</span>
+        <span class="sr-only">
+          {locale === "en"
+            ? (englishTitles[social.name] ?? social.linkTitle)
+            : social.linkTitle}
+        </span>
       </LinkButton>
     ))
   }

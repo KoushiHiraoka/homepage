@@ -1,0 +1,40 @@
+---
+import { myNames } from "@/data/publications";
+interface Props {
+  authors: string;
+}
+const { authors } = Astro.props;
+// 名前は正規表現ではなく文字列として照合し、著者文字列はAstroでエスケープする。
+const names = [...myNames].filter(Boolean).sort((a, b) => b.length - a.length);
+const parts: { text: string; highlighted: boolean }[] = [];
+let position = 0;
+while (position < authors.length) {
+  const next = names
+    .map(name => ({ name, index: authors.indexOf(name, position) }))
+    .filter(match => match.index >= 0)
+    .sort((a, b) => a.index - b.index)[0];
+  if (!next) {
+    parts.push({ text: authors.slice(position), highlighted: false });
+    break;
+  }
+  if (next.index > position)
+    parts.push({
+      text: authors.slice(position, next.index),
+      highlighted: false,
+    });
+  parts.push({ text: next.name, highlighted: true });
+  position = next.index + next.name.length;
+}
+---
+
+<p class="text-sm text-foreground/70">
+  {
+    parts.map(part =>
+      part.highlighted ? (
+        <u class="underline underline-offset-2">{part.text}</u>
+      ) : (
+        part.text
+      )
+    )
+  }
+</p>

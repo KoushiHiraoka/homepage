@@ -1,0 +1,62 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import LanguageSwitch from "@/components/LanguageSwitch.astro";
+import ProfileHero from "./ProfileHero.astro";
+import CareerSection from "./CareerSection.astro";
+import AwardsSection from "./AwardsSection.astro";
+import PublicationsSection from "./PublicationsSection.astro";
+import ProductsSection from "./ProductsSection.astro";
+import { profile, type Locale } from "@/data/home";
+import { SITE } from "@/config";
+import { homePath } from "@/utils/homePath";
+import { toSiteURL } from "@/utils/toSiteURL";
+import { getHomeStructuredData } from "@/utils/getHomeStructuredData";
+import profileImage from "@/assets/images/profile-2.png";
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const title =
+  locale === "ja"
+    ? `${SITE.title} | 九州大学 荒川研究室`
+    : `${profile.name.en} | Arakawa Laboratory, Kyushu University`;
+const languageAlternates = (["ja", "en"] as const).map(lang => ({
+  lang,
+  href: toSiteURL(homePath(lang)).href,
+}));
+---
+
+<Layout
+  title={title}
+  description={profile.description[locale]}
+  lang={locale}
+  author={profile.name[locale]}
+  canonicalURL={toSiteURL(homePath(locale)).href}
+  languageAlternates={languageAlternates}
+  structuredData={getHomeStructuredData(profileImage.src, locale)}
+>
+  <Header locale={locale} showCareer />
+  <main id="main-content" data-layout="index" class="app-layout">
+    <LanguageSwitch locale={locale} />
+    <ProfileHero locale={locale} />
+    <CareerSection locale={locale} />
+    {locale === "ja" && <AwardsSection />}
+    <PublicationsSection locale={locale} />
+    {locale === "ja" && <ProductsSection />}
+  </main>
+  <Footer locale={locale} />
+</Layout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    if (document.querySelector('[data-layout="index"]')) {
+      try {
+        sessionStorage.setItem("backUrl", location.pathname);
+      } catch {
+        /* Storage may be disabled. */
+      }
+    }
+  });
+</script>
